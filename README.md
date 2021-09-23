@@ -1,6 +1,7 @@
 # STAT-433-HW_2
 
 ## Problem 1
+
 library(dplyr)
 bridges_data <- read.csv("bridges_data.txt", header=TRUE, sep=",", dec=".")
 
