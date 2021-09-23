@@ -29,7 +29,6 @@ hist(as.integer(bridge$DECK_COND_058), main="Bridge quality", xlab="Bridge quali
 require(rvest)
 site = read_html("https://guide.wisc.edu/faculty/")
 text = html_text(html_nodes(site, "p"))
-text = text[3:3792]
-text
+text = text[3:3791]
 ```
 
