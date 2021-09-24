@@ -6,63 +6,54 @@ Huailin Tang
 ## Problem 1
 
 ``` r
-library(dplyr)
-```
-
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
-``` r
 bridges_data <- read.csv("bridges_data.txt", header=TRUE, sep=",", dec=".")
 
 bridge <- bridges_data[c("STRUCTURE_NUMBER_008", "STATE_CODE_001", "YEAR_BUILT_027", "DECK_COND_058", "SUPERSTRUCTURE_COND_059", "CHANNEL_COND_061")]
 
-bridge <- bridge[bridge$YEAR_BUILT_027 > 1850 & bridge$DECK_COND_058 != "N" & bridge$STATE_CODE_001 < 80, ]
+# remove NA
+bridge <- bridge[complete.cases(bridge), ] 
 
+# convert string value to int
+bridge$STATE_CODE_001 <- as.integer(bridge$STATE_CODE_001)
+bridge$DECK_COND_058 <- as.integer(bridge$DECK_COND_058)
+bridge$SUPERSTRUCTURE_COND_059 <- as.integer(bridge$SUPERSTRUCTURE_COND_059)
+bridge$CHANNEL_COND_061 <- as.integer(bridge$CHANNEL_COND_061)
+
+# remove false input or outliers
+bridge <- bridge[bridge$YEAR_BUILT_027 > 1850 & bridge$DECK_COND_058 != "N" & bridge$STATE_CODE_001 < 80 , ]  
+
+# histogram
 hist(bridge$YEAR_BUILT_027, main="Year-Built", xlab="Year")
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
 ``` r
-hist(as.integer(bridge$STATE_CODE_001), main="State Code", xlab="state code")
+hist(bridge$STATE_CODE_001, main="State Code", xlab="state code")
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-1-2.png)<!-- -->
 
 ``` r
-hist(as.integer(bridge$DECK_COND_058), main="Deck quality", xlab="Deck quality")
+hist(bridge$DECK_COND_058, main="Deck quality", xlab="Deck quality")
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-1-3.png)<!-- -->
 
 ``` r
-hist(as.integer(bridge$SUPERSTRUCTURE_COND_059), main="Structure quality", xlab="Structure quality")
+hist(bridge$SUPERSTRUCTURE_COND_059, main="Structure quality", xlab="Structure quality")
 ```
-
-    ## Warning in hist(as.integer(bridge$SUPERSTRUCTURE_COND_059), main = "Structure
-    ## quality", : NAs introduced by coercion
 
 ![](README_files/figure-gfm/unnamed-chunk-1-4.png)<!-- -->
 
 ``` r
-hist(as.integer(bridge$CHANNEL_COND_061), main="Channel quality", xlab="Channel quality")
+hist(bridge$CHANNEL_COND_061, main="Channel quality", xlab="Channel quality")
 ```
-
-    ## Warning in hist(as.integer(bridge$CHANNEL_COND_061), main = "Channel quality", :
-    ## NAs introduced by coercion
 
 ![](README_files/figure-gfm/unnamed-chunk-1-5.png)<!-- -->
 
 ``` r
+# scatterplot
 plot(bridge$YEAR_BUILT_027, as.integer(bridge$DECK_COND_058), main="Deck quality vs. Year-Built",
    xlab="Year-Built ", ylab="Deck quality ", pch=19)
 ```

@@ -6,28 +6,37 @@ output: rmarkdown::github_document
 ---
 
 ## Problem 1
-```{r}
-library(dplyr)
+```{r warning=FALSE}
 bridges_data <- read.csv("bridges_data.txt", header=TRUE, sep=",", dec=".")
 
 bridge <- bridges_data[c("STRUCTURE_NUMBER_008", "STATE_CODE_001", "YEAR_BUILT_027", "DECK_COND_058", "SUPERSTRUCTURE_COND_059", "CHANNEL_COND_061")]
 
-bridge <- bridge[bridge$YEAR_BUILT_027 > 1850 & bridge$DECK_COND_058 != "N" & bridge$STATE_CODE_001 < 80, ]
+# remove NA
+bridge <- bridge[complete.cases(bridge), ] 
 
+# convert string value to int
+bridge$STATE_CODE_001 <- as.integer(bridge$STATE_CODE_001)
+bridge$DECK_COND_058 <- as.integer(bridge$DECK_COND_058)
+bridge$SUPERSTRUCTURE_COND_059 <- as.integer(bridge$SUPERSTRUCTURE_COND_059)
+bridge$CHANNEL_COND_061 <- as.integer(bridge$CHANNEL_COND_061)
+
+# remove false input or outliers
+bridge <- bridge[bridge$YEAR_BUILT_027 > 1850 & bridge$DECK_COND_058 != "N" & bridge$STATE_CODE_001 < 80 , ]  
+
+# histogram
 hist(bridge$YEAR_BUILT_027, main="Year-Built", xlab="Year")
 
-hist(as.integer(bridge$STATE_CODE_001), main="State Code", xlab="state code")
+hist(bridge$STATE_CODE_001, main="State Code", xlab="state code")
 
-hist(as.integer(bridge$DECK_COND_058), main="Deck quality", xlab="Deck quality")
+hist(bridge$DECK_COND_058, main="Deck quality", xlab="Deck quality")
 
-hist(as.integer(bridge$SUPERSTRUCTURE_COND_059), main="Structure quality", xlab="Structure quality")
+hist(bridge$SUPERSTRUCTURE_COND_059, main="Structure quality", xlab="Structure quality")
 
-hist(as.integer(bridge$CHANNEL_COND_061), main="Channel quality", xlab="Channel quality")
+hist(bridge$CHANNEL_COND_061, main="Channel quality", xlab="Channel quality")
 
+# scatterplot
 plot(bridge$YEAR_BUILT_027, as.integer(bridge$DECK_COND_058), main="Deck quality vs. Year-Built",
    xlab="Year-Built ", ylab="Deck quality ", pch=19)
-
-
 ```
 
 
