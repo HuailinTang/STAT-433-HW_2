@@ -2,7 +2,7 @@
 title: "HW2"
 author: "Huailin Tang"
 date: "9/23/2021"
-output: output: rmarkdown::github_document
+output: rmarkdown::github_document
 ---
 
 ## Problem 1
